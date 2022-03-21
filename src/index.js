@@ -8,8 +8,12 @@ const MailChannel = require('./channels/mailChannel');
  * @returns {function} return middleware
  */
 
-module.exports = (config) => {
-/**
+module.exports = ({ config }) => {
+  
+  if(typeof config?.config != Object)
+    throw new Error('you must set conifg as object -> { config : {} }')
+
+  /**
    * LIST OF CHANNELS THAT NOTIFICATION CAN SEND
    * And Merge Default Channels with Custom Channels
    */
