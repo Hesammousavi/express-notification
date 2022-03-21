@@ -3,24 +3,23 @@ const MailChannel = require('./channels/mailChannel');
 
 /**
  * Register A Notify method for send notification
- * @param app
- * @param config
+ * @param {object} config
  * @returns {function} return middleware
  */
 
-module.exports = ({ config }) => {
-  
-  if(typeof config?.config != Object)
-    throw new Error('you must set conifg as object -> { config : {} }')
+module.exports = ({ config , channels }) => {
+
+  if(typeof config != 'object')
+    throw new Error('you must set conifg as object')
 
   /**
    * LIST OF CHANNELS THAT NOTIFICATION CAN SEND
    * And Merge Default Channels with Custom Channels
    */
-  let channels = {
-    mail : MailChannel,
-    ...config?.channels
-  }
+   channels = {
+     mail : MailChannel,
+     ...channels
+   }
 
   /**
    * the user data for send notification
@@ -40,7 +39,7 @@ module.exports = ({ config }) => {
   const channelToNotify = async (channel , { notifiable, notification }) => {
     // check channel exists in global channels list
     if(channels[channel])
-      await (new channels[channel](config.config)).send(notifiable , notification);
+      await (new channels[channel](config)).send(notifiable , notification);
   }
 
   return (req , res , next) => {
