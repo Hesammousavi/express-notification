@@ -1,6 +1,6 @@
 {
   "name": "express-notification",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "express notification system to send notification easer",
   "main": "index.js",
   "repository": {
