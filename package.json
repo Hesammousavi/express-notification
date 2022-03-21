@@ -1,0 +1,23 @@
+{
+  "name": "express-notification",
+  "version": "0.0.1",
+  "description": "express notification system to send notification easer",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/Hesammousavi/express-notification"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "notify",
+    "notification"
+  ],
+  "dependencies": {
+    "nodemailer": "^6.7.2"
+  },
+  "author": "Hesam Mousavi",
+  "license": "MIT"
+}
