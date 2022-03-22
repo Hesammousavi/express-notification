@@ -26,20 +26,20 @@ module.exports = ({ config , channels }) => {
    * @param notifiable
    * @param notification
    */
-  const notifyHandler = async (notifiable, notification) => {
+  const notifyHandler = async (notification) => {
     // get channels that notification must send to them
     let channelsMustBeNotify = notification.via();
 
     // notify to notifiable with different channels
     for (const channel of channelsMustBeNotify) {
-      await channelToNotify(channel , { notifiable, notification });
+      await channelToNotify(channel, notification);
     }
   }
 
-  const channelToNotify = async (channel , { notifiable, notification }) => {
+  const channelToNotify = async (channel, notification) => {
     // check channel exists in global channels list
     if(channels[channel])
-      await (new channels[channel](config)).send(notifiable , notification);
+      await (new channels[channel](config)).send(notification);
   }
 
   return (req , res , next) => {
