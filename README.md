@@ -1,4 +1,4 @@
-# express-router
+# express-notificaiton
 express notification system
 
 > you can send notification with diffrent channels
