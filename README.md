@@ -72,6 +72,7 @@ maybe in ./notifications/exampleNotification.js
 class ExampleNotification {
 
     constructor(notifiable) {
+      if(!notifiable.email) throw new Error("email not specified")
       this.notifiable = notifiable
     }
 
