@@ -100,7 +100,7 @@ class ExampleNotification {
   }
   
   
-  module.exports = () => new ExampleNotification()
+  module.exports = (notifiable) => new ExampleNotification(notifiable)
 ```
 
 ### Step Four : Send Notificaiton
@@ -195,6 +195,11 @@ you can use the channel in every notification class you want
 
 ```js
 class ExampleNotification {
+
+
+    constructor(notifiable) {
+      this.notifiable = notifiable
+    }
 
     /**
      * return list of channels that you want to send notification to
