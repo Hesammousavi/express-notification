@@ -26,7 +26,7 @@ app.use(notification.register(notificationConfig))
 
 app.get('/', (req, res) => {
   // send notificaiton
-  res.notify({ email : 'hesam@gmail.com' } , exampleNotification() )
+  res.notify(exampleNotification()).to({ email : 'hesam@gmail.com' })
   res.send('Hello World!')
 })
 

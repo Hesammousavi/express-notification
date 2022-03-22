@@ -1,4 +1,5 @@
 const MailChannel = require('./channels/mailChannel');
+const NotificationHandler = require("./notificationHandler");
 
 
 /**
@@ -7,45 +8,29 @@ const MailChannel = require('./channels/mailChannel');
  * @returns {function} return middleware
  */
 
-module.exports = ({ config , channels }) => {
+module.exports = ({config, channels}) => {
 
-  if(typeof config != 'object')
-    throw new Error('you must set conifg as object')
+    if (typeof config != 'object')
+        throw new Error('you must set conifg as object')
 
-  /**
-   * LIST OF CHANNELS THAT NOTIFICATION CAN SEND
-   * And Merge Default Channels with Custom Channels
-   */
-   channels = {
-     mail : MailChannel,
-     ...channels
-   }
-
-  /**
-   * the user data for send notification
-   * @param notifiable
-   * @param notification
-   */
-  const notifyHandler = async (notifiable, notification) => {
-    // get channels that notification must send to them
-    let channelsMustBeNotify = notification.via();
-
-    // notify to notifiable with different channels
-    for (const channel of channelsMustBeNotify) {
-      await channelToNotify(channel , { notifiable, notification });
+    /**
+     * LIST OF CHANNELS THAT NOTIFICATION CAN SEND
+     * And Merge Default Channels with Custom Channels
+     */
+    channels = {
+        mail: MailChannel,
+        ...channels
     }
-  }
 
-  const channelToNotify = async (channel , { notifiable, notification }) => {
-    // check channel exists in global channels list
-    if(channels[channel])
-      await (new channels[channel](config)).send(notifiable , notification);
-  }
+    /**
+     * the user data for send notification
+     * @param notification
+     */
+    const notifyHandler = (notification) => (new NotificationHandler(config, notification)).setChannels(channels).handle()
 
-  return (req , res , next) => {
-    // set notify handler
-    res.notify = notifyHandler;
-    next();
-  }
+    return (req, res, next) => {// set notify handler
+        res.notify = notifyHandler;
+        next();
+    }
 }
 

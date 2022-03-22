@@ -109,7 +109,7 @@ const exampleNotification = require('./notifications/exampleNotification');
 
 app.get('/', (req, res) => {
   // send notificaiton
-  res.notify({ email : 'hesam@gmail.com' } , exampleNotification() )
+  res.notify(exampleNotification()).to({ email : 'hesam@gmail.com' })
   res.send('Hello World!')
 });
 ```
