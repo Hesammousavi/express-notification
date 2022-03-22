@@ -17,15 +17,11 @@ class MailChannel {
 
   /**
    *
-   * @param notifiable
    * @param {Notification} notification
    */
-  async send(notifiable , notification ) {
-    let message = notification.toMail(notifiable);
-    let { email } = notifiable;
-
-    if(email)
-      await this.sendEmail(message);
+  async send(notification) {
+    let message = notification.toMail();
+    await this.sendEmail(message);
   }
 }
 
