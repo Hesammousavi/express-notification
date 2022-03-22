@@ -71,6 +71,11 @@ maybe in ./notifications/exampleNotification.js
 ```js
 class ExampleNotification {
 
+    constructor(notifiable) {
+      if(!notifiable.email) throw new Error("email not specified")
+      this.notifiable = notifiable
+    }
+
     /**
      * return list of channels that you want to send notification to
      * @returns {string[]}
@@ -81,13 +86,12 @@ class ExampleNotification {
   
     /**
      *
-     * @param {{ email : string }} notifiable
      * @returns {{subject: string, from: string, html: string, to}}
      */
-    toMail(notifiable) {
+    toMail() {
       return {
         from : 'hi@example.com',
-        to : notifiable.email,
+        to : this.notifiable.email,
         subject: 'hello world',
         html : `
             <h2>Hello World</h2>
@@ -97,7 +101,7 @@ class ExampleNotification {
   }
   
   
-  module.exports = () => new ExampleNotification()
+  module.exports = (notifiable) => new ExampleNotification(notifiable)
 ```
 
 ### Step Four : Send Notificaiton
@@ -109,7 +113,7 @@ const exampleNotification = require('./notifications/exampleNotification');
 
 app.get('/', (req, res) => {
   // send notificaiton
-  res.notify({ email : 'hesam@gmail.com' } , exampleNotification() )
+  res.notify(exampleNotification({ email: 'hesam@gmail.com' }))
   res.send('Hello World!')
 });
 ```
@@ -135,12 +139,11 @@ class SmsChannel {
   }
   /**
    *
-   * @param notifiable
    * @param {Notification} notification
    */
-  async send(notifiable , notification ) {
+  async send(notification) {
     // this message comes from Notification classes
-    let message = notification.toSms(notifiable);
+    let message = notification.toSms();
     let { phoneNumber } = notifiable;
 
     // can require an api to send sms here
@@ -194,6 +197,11 @@ you can use the channel in every notification class you want
 ```js
 class ExampleNotification {
 
+
+    constructor(notifiable) {
+      this.notifiable = notifiable
+    }
+
     /**
      * return list of channels that you want to send notification to
      * @returns {string[]}
@@ -207,10 +215,10 @@ class ExampleNotification {
      * @param {{ email : string }} notifiable
      * @returns {{subject: string, from: string, html: string, to}}
      */
-    toMail(notifiable) {
+    toMail() {
       return {
         from : 'hi@example.com',
-        to : notifiable.email,
+        to : this.notifiable.email,
         subject: 'hello world',
         html : `
             <h2>Hello World</h2>
@@ -218,7 +226,7 @@ class ExampleNotification {
       }
     }
 
-    toSms(notifiable) {
+    toSms() {
         return {
             message : 'hello roocket'
         }
@@ -226,5 +234,5 @@ class ExampleNotification {
   }
   
   
-  module.exports = () => new ExampleNotification()
+  module.exports = (notifiable) => new ExampleNotification(notifiable)
 ```
