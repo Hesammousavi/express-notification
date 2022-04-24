@@ -1,4 +1,4 @@
 const Notification = require('./src');
 
 
- exports.register = (config) => Notification(config)
+exports.register = (config , withRequest = true) => Notification(config , withRequest)

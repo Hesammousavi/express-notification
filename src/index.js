@@ -8,7 +8,7 @@ const NotificationHandler = require("./notificationHandler");
  * @returns {function} return middleware
  */
 
-module.exports = ({config, channels}) => {
+module.exports = ({config, channels} , withRequest = true) => {
 
     if (typeof config != 'object')
         throw new Error('you must set conifg as object')
@@ -28,9 +28,12 @@ module.exports = ({config, channels}) => {
      */
     const notifyHandler = (notification) => (new NotificationHandler(config, notification)).setChannels(channels).handle()
 
-    return (req, res, next) => {// set notify handler
-        res.notify = notifyHandler;
-        next();
-    }
+    if(withRequest)
+        return (req, res, next) => {// set notify handler
+            res.notify = notifyHandler;
+            next();
+        }
+
+    return notifyHandler;
 }
 
